@@ -4,9 +4,8 @@ typedef Avl *p_avl;
 
 typedef struct Entrada
 {
-    int i;           // linha
-    int j;           // coluna
-    int valor;       // entrada não
+    int i, j;        // posição
+    int valor;       // entrada não nula
     p_entrada left;  // filho a esquerda
     p_entrada right; // filho a direita
 } Entrada;
