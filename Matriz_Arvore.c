@@ -7,14 +7,14 @@ int max(int a, int b)
     return (a > b) ? a : b;
 }
 
-int altura(p_avl no)
+int altura(p_avl_coluna no)
 {
     if (no == NULL)
         return 0;
     return no->alt;
 }
 
-void atualiza_altura(p_avl no)
+void atualiza_altura(p_avl_coluna no)
 {
     if (no != NULL)
     {
@@ -22,17 +22,17 @@ void atualiza_altura(p_avl no)
     }
 }
 
-int f_balanceamento(p_avl no)
+int f_balanceamento(p_avl_coluna no)
 {
     if (no == NULL)
         return 0;
     return altura(no->esq) - altura(no->dir);
 }
 
-p_avl rotacao_direita(p_avl y)
+p_avl_coluna rotacao_direita(p_avl_coluna y)
 {
-    p_avl x = y->esq;
-    p_avl aux = x->dir;
+    p_avl_coluna x = y->esq;
+    p_avl_coluna aux = x->dir;
 
     //rotaciona
     x->dir = y;
@@ -45,10 +45,10 @@ p_avl rotacao_direita(p_avl y)
     return x;
 }
 
-p_avl rotacao_esquerda(p_avl x)
+p_avl_coluna rotacao_esquerda(p_avl_coluna x)
 {
-    p_avl y = x->dir;
-    p_avl aux = y->esq;
+    p_avl_coluna y = x->dir;
+    p_avl_coluna aux = y->esq;
 
     //rotaciona
     y->esq = x;
@@ -61,7 +61,7 @@ p_avl rotacao_esquerda(p_avl x)
     return y;
 }
 
-p_avl inserir_avl(p_avl raiz, p_avl nova_entrada)
+p_avl_coluna inserir_avl(p_avl_coluna raiz, p_avl_coluna nova_entrada)
 {
     if (raiz == NULL)
     {
