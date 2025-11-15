@@ -6,6 +6,7 @@ typedef struct Entrada
 {
     int i, j;        // posição
     int valor;       // entrada não nula
+    int alt;
     p_entrada left;  // filho a esquerda
     p_entrada right; // filho a direita
 } Entrada;
