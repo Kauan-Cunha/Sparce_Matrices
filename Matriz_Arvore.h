@@ -4,6 +4,7 @@ typedef AVL_Coluna *p_avl_coluna;
 typedef struct
 {
     int i;            // linha
+    int alt;
     p_avl_coluna col; // AVL da coluna
     p_avl_linha esq;  // filho a esquerda
     p_avl_linha dir;  // filho a direita
@@ -12,6 +13,7 @@ typedef struct
 typedef struct
 {
     int j;            // coluna
+    int alt;
     int valor;        // entrada não nula
     p_avl_coluna esq; // filho a esquerda
     p_avl_coluna dir; // filho a direita
@@ -25,7 +27,7 @@ typedef struct
 p_avl_linha criar_matriz_arvore();
 
 // insere em log(k)
-void inserir_avl(p_avl_linha raiz, p_avl_coluna entrada);
+p_avl_coluna inserir_avl(p_avl_coluna raiz, p_avl_coluna nova_entrada);
 
 // acessa elemento em log(k)
 int buscar_entrada(p_avl_linha arvore, int j);
