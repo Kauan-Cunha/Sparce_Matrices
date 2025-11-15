@@ -1,6 +1,6 @@
 typedef entrada *p_entrada; 
 typedef matrix_a *matrix_a;
-typedef avl *a
+typedef avl *p_avl;
 
 typedef struct Entrada
 {
@@ -21,4 +21,8 @@ typedef struct Matrix_Arvore
     p_entrada *lista;
 } matrix_a;
 
-void inserir_avl()
+//Inseri em Log(K)
+void inserir_avl(p_avl arvore, p_entrada entrada);
+
+//Acessa elemento em Log(K)
+int buscar_entrada(p_avl arvore, int j);
