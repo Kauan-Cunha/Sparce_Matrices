@@ -1,22 +1,31 @@
-typedef Matriz_Arvore *p_matriz_arvore;
-typedef Avl *p_avl;
+typedef AVL_Linha *p_avl_linha;
+typedef AVL_Coluna *p_avl_coluna;
 
 typedef struct
 {
-    int i, j;        // posição
-    int valor;       // entrada não nula
-    int alt;
-    p_avl left;  // filho a esquerda
-    p_avl right; // filho a direita
-} Avl;
+    int i;            // linha
+    p_avl_coluna col; // AVL da coluna
+    p_avl_linha esq;  // filho a esquerda
+    p_avl_linha dir;  // filho a direita
+} AVL_Linha;
 
-typedef struct Matriz_Arvore
+typedef struct
 {
-    p_avl *lista;
-} Matriz_Arvore;
+    int j;            // coluna
+    int valor;        // entrada não nula
+    p_avl_coluna esq; // filho a esquerda
+    p_avl_coluna dir; // filho a direita
+} AVL_Coluna;
+
+// typedef struct Matriz_Arvore
+// {
+//     p_avl_linha raiz;
+// } Matriz_Arvore;
+
+p_avl_linha criar_matriz_arvore();
 
 // insere em log(k)
-void inserir_avl(p_avl raiz, p_avl entrada);
+void inserir_avl(p_avl_linha raiz, p_avl_coluna entrada);
 
 // acessa elemento em log(k)
-int buscar_entrada(p_avl arvore, int j);
+int buscar_entrada(p_avl_linha arvore, int j);
