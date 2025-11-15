@@ -3,23 +3,11 @@ typedef Avl *p_avl;
 
 typedef struct
 {
-<<<<<<< HEAD
     int i, j;        // posição
     int valor;       // entrada não nula
     int alt;
-    p_entrada left;  // filho a esquerda
-    p_entrada right; // filho a direita
-} Entrada;
-
-typedef struct Avl
-{
-    p_entrada raiz;
-=======
-    int i, j;  // posição
-    int valor; // entrada não nula
-    p_avl esq; // filho a esquerda
-    p_avl dir; // filho a direita
->>>>>>> b9c3c575ccf4ce6128f147b60c90d414c56ce729
+    p_avl left;  // filho a esquerda
+    p_avl right; // filho a direita
 } Avl;
 
 typedef struct Matriz_Arvore
