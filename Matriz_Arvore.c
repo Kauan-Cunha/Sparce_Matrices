@@ -295,8 +295,31 @@ int acessar_elemento(int i, int j, p_avl_linha raiz_linhas)
     return elemento->valor;
 }
 
-void inserir_elemento(int valor, int i, int j, p_avl_coluna raiz_linhas){
+p_avl_linha inserir_elemento(int valor, int i, int j, p_avl_linha raiz_linhas)
+{
+    p_avl_linha no_linha = buscar_entrada_linhas(raiz_linhas, i);
     
+    if (no_linha == NULL)
+    {
+        p_avl_linha nova_linha = calloc(1, sizeof(AVL_Linha));
+        nova_linha->i = i;
+        nova_linha->col = NULL; 
+        
+        raiz_linhas = inserir_avl_linha(raiz_linhas, nova_linha);
+        
+        no_linha = buscar_entrada_linhas(raiz_linhas, i);
+    }
+    
+    if (no_linha != NULL) 
+    {
+        p_avl_coluna novo_elemento = calloc(1, sizeof(AVL_Coluna));
+        novo_elemento->j = j;
+        novo_elemento->valor = valor;
+
+        no_linha->col = inserir_avl_coluna(no_linha->col, novo_elemento);
+    }
+    
+    return raiz_linhas;
 }
 
 p_avl_linha copiar(p_avl_linha a)
