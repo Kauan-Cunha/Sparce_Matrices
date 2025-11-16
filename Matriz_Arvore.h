@@ -1,5 +1,6 @@
 typedef struct AVL_Linha AVL_Linha;
 typedef struct AVL_Coluna AVL_Coluna;
+typedef struct Matriz_Arvore Matriz_Arvore;
 
 typedef AVL_Linha *p_avl_linha;
 typedef AVL_Coluna *p_avl_coluna;
@@ -23,18 +24,11 @@ struct AVL_Coluna
     p_avl_coluna dir; // filho a direita
 };
 
-struct  Matriz_Arvore
+struct Matriz_Arvore
 {
     p_avl_linha matriz;
     p_avl_linha transposta;
 };
-
-
-// typedef struct Matriz_Arvore
-// {
-//     p_avl_linha raiz;
-// } Matriz_Arvore;
-
 
 void inserir_matriz(p_matriz_arvore matriz, int i, int j, int valor);
 

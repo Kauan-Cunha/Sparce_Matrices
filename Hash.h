@@ -1,4 +1,4 @@
-#define MAX 2003 // bom tamanho de hash para k = 1000
+#define MAX 263171
 
 #include <stdlib.h>
 #include "stdio.h"

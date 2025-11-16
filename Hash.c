@@ -23,7 +23,15 @@ p_matrizes criar_matrizes(int n, int m, int tamanho)
 
 long int chave_hash(int i, int j)
 {
-    return i * 10007 + j * 50021; // função hash utilizando primos de magnitude intermediária
+    long long key = ((long long)i << 32) ^ (unsigned long long)j;
+
+    key ^= key >> 33;
+    key *= 0xff51afd7ed558ccdULL;
+    key ^= key >> 33;
+    key *= 0xc4ceb9fe1a85ec53ULL;
+    key ^= key >> 33;
+
+    return (long int)key;
 }
 
 int acessar(p_matriz_esparsa A, int i, int j)
