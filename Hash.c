@@ -1,4 +1,4 @@
-#include "hash.h"
+#include "Hash.h"
 
 p_matriz_esparsa criar_matriz(int n, int m, int tamanho)
 {
