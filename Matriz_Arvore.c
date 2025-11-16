@@ -23,7 +23,7 @@ FUNÇÕES PARA AVL COLUNA
 int altura_col(p_avl_coluna no)
 {
     if (no == NULL)
-    return 0;
+        return 0;
     return no->alt;
 }
 
@@ -38,7 +38,7 @@ void atualiza_altura_col(p_avl_coluna no)
 int f_balanceamento_col(p_avl_coluna no)
 {
     if (no == NULL)
-    return 0;
+        return 0;
     return altura_col(no->esq) - altura_col(no->dir);
 }
 
@@ -46,15 +46,15 @@ p_avl_coluna rotacao_direita_col(p_avl_coluna y)
 {
     p_avl_coluna x = y->esq;
     p_avl_coluna aux = x->dir;
-    
-    //rotaciona
+
+    // rotaciona
     x->dir = y;
     y->esq = aux;
-    
-    //atualiza a altura
+
+    // atualiza a altura
     atualiza_altura_col(y);
     atualiza_altura_col(x);
-    
+
     return x;
 }
 
@@ -62,21 +62,21 @@ p_avl_coluna rotacao_esquerda_col(p_avl_coluna x)
 {
     p_avl_coluna y = x->dir;
     p_avl_coluna aux = y->esq;
-    
-    //rotaciona
+
+    // rotaciona
     y->esq = x;
     x->dir = aux;
-    
-    //atualiza a matriz
+
+    // atualiza a matriz
     atualiza_altura_col(x);
     atualiza_altura_col(y);
-    
+
     return y;
 }
 
 p_avl_coluna inserir_avl_coluna(p_avl_coluna raiz, p_avl_coluna nova_entrada)
 {
-    //caso base
+    // caso base
     if (raiz == NULL)
     {
         nova_entrada->alt = 1; // Altura de folha
@@ -84,7 +84,7 @@ p_avl_coluna inserir_avl_coluna(p_avl_coluna raiz, p_avl_coluna nova_entrada)
         nova_entrada->dir = NULL;
         return nova_entrada;
     }
-    //busca onde inserir
+    // busca onde inserir
     if (nova_entrada->j < raiz->j)
     {
         raiz->esq = inserir_avl_coluna(raiz->esq, nova_entrada);
@@ -98,34 +98,34 @@ p_avl_coluna inserir_avl_coluna(p_avl_coluna raiz, p_avl_coluna nova_entrada)
         raiz->valor = nova_entrada->valor;
         return raiz;
     }
-    
-    //balanceia
+
+    // balanceia
     atualiza_altura_col(raiz);
-    
+
     int fb = f_balanceamento_col(raiz);
-    
+
     if (fb > 1 && nova_entrada->j < raiz->esq->j)
     {
         return rotacao_direita_col(raiz);
     }
-    
+
     if (fb < -1 && nova_entrada->j > raiz->dir->j)
     {
         return rotacao_esquerda_col(raiz);
     }
-    
+
     if (fb > 1 && nova_entrada->j > raiz->esq->j)
     {
         raiz->esq = rotacao_esquerda_col(raiz->esq);
         return rotacao_direita_col(raiz);
     }
-    
+
     if (fb < -1 && nova_entrada->j < raiz->dir->j)
     {
         raiz->dir = rotacao_direita_col(raiz->dir);
         return rotacao_esquerda_col(raiz);
     }
-    
+
     return raiz;
 }
 
@@ -194,7 +194,7 @@ p_avl_linha inserir_avl_linha(p_avl_linha raiz, p_avl_linha nova_entrada)
         return nova_entrada;
     }
 
-    //busca onde inserir
+    // busca onde inserir
     if (nova_entrada->i < raiz->i)
     {
         raiz->esq = inserir_avl_linha(raiz->esq, nova_entrada);
@@ -207,34 +207,34 @@ p_avl_linha inserir_avl_linha(p_avl_linha raiz, p_avl_linha nova_entrada)
     {
         return raiz;
     }
-    
-    //balanceia 
+
+    // balanceia
     atualiza_altura_lin(raiz);
-    
+
     int fb = f_balanceamento_lin(raiz);
-    
+
     if (fb > 1 && nova_entrada->i < raiz->esq->i)
     {
         return rotacao_direita_lin(raiz);
     }
-    
+
     if (fb < -1 && nova_entrada->i > raiz->dir->i)
     {
         return rotacao_esquerda_lin(raiz);
     }
-    
+
     if (fb > 1 && nova_entrada->i > raiz->esq->i)
     {
         raiz->esq = rotacao_esquerda_lin(raiz->esq);
         return rotacao_direita_lin(raiz);
     }
-    
+
     if (fb < -1 && nova_entrada->i < raiz->dir->i)
     {
         raiz->dir = rotacao_direita_lin(raiz->dir);
         return rotacao_esquerda_lin(raiz);
     }
-    
+
     return raiz;
 }
 
@@ -244,7 +244,7 @@ p_avl_linha buscar_entrada_linhas(p_avl_linha arvore, int i)
     {
         return NULL;
     }
-    
+
     if (arvore->i == i)
     {
         return arvore;
@@ -253,7 +253,7 @@ p_avl_linha buscar_entrada_linhas(p_avl_linha arvore, int i)
     {
         return buscar_entrada_linhas(arvore->dir, i);
     }
-    
+
     return buscar_entrada_linhas(arvore->esq, i);
 }
 
@@ -263,7 +263,7 @@ p_avl_coluna buscar_entrada_colunas(p_avl_coluna arvore, int j)
     {
         return NULL;
     }
-    
+
     if (arvore->j == j)
     {
         return arvore;
@@ -272,19 +272,19 @@ p_avl_coluna buscar_entrada_colunas(p_avl_coluna arvore, int j)
     {
         return buscar_entrada_colunas(arvore->dir, j);
     }
-    
+
     return buscar_entrada_colunas(arvore->esq, j);
 }
 
 int acessar_elemento(int i, int j, p_avl_linha raiz_linhas)
 {
     p_avl_linha no_linha = buscar_entrada_linhas(raiz_linhas, i);
-    
+
     if (no_linha == NULL)
     {
         return 0;
     }
-    
+
     p_avl_coluna elemento = buscar_entrada_colunas(no_linha->col, j);
 
     if (elemento == NULL)
@@ -298,19 +298,19 @@ int acessar_elemento(int i, int j, p_avl_linha raiz_linhas)
 p_avl_linha inserir_elemento(int valor, int i, int j, p_avl_linha raiz_linhas)
 {
     p_avl_linha no_linha = buscar_entrada_linhas(raiz_linhas, i);
-    
+
     if (no_linha == NULL)
     {
         p_avl_linha nova_linha = calloc(1, sizeof(AVL_Linha));
         nova_linha->i = i;
-        nova_linha->col = NULL; 
-        
+        nova_linha->col = NULL;
+
         raiz_linhas = inserir_avl_linha(raiz_linhas, nova_linha);
-        
+
         no_linha = buscar_entrada_linhas(raiz_linhas, i);
     }
-    
-    if (no_linha != NULL) 
+
+    if (no_linha != NULL)
     {
         p_avl_coluna novo_elemento = calloc(1, sizeof(AVL_Coluna));
         novo_elemento->j = j;
@@ -318,16 +318,80 @@ p_avl_linha inserir_elemento(int valor, int i, int j, p_avl_linha raiz_linhas)
 
         no_linha->col = inserir_avl_coluna(no_linha->col, novo_elemento);
     }
-    
+
     return raiz_linhas;
+}
+
+p_avl_coluna copiar_coluna(p_avl_coluna col)
+{
+    if (col == NULL)
+    {
+        return NULL;
+    }
+
+    p_avl_coluna copia = malloc(sizeof(AVL_Coluna));
+    copia->j = col->j;
+    copia->alt = col->alt;
+    copia->valor = col->valor;
+    copia->esq = copiar_coluna(col->esq);
+    copia->dir = copiar_coluna(col->dir);
+
+    return copia;
 }
 
 p_avl_linha copiar(p_avl_linha a)
 {
+    if (a == NULL)
+    {
+        return NULL;
+    }
+
     p_avl_linha b = criar_matriz_arvore();
+
+    b->i = a->i;
+    b->alt = a->alt;
+    b->col = copiar_coluna(a->col);
+    b->esq = copiar(a->esq);
+    b->dir = copiar(a->dir);
+
+    return b;
 }
 
-int somar(p_avl_linha a, p_avl_linha b)
+p_avl_coluna somar_colunas(p_avl_coluna col_b, int i, p_avl_linha c)
 {
-    p_avl_linha c = criar_matriz_arvore();
+    if (col_b == NULL)
+    {
+        return c;
+    }
+
+    c = somar_colunas(col_b->esq, i, c);
+
+    int j = col_b->j;
+    int valor_a = acessar_elemento(i, j, c);
+    int valor_b = col_b->valor;
+
+    c = inserir_elemento(valor_a, i, j, valor_a + valor_b);
+    c = somar_colunas(col_b->dir, i, c);
+    return c;
+}
+
+p_avl_linha somar_linhas(p_avl_linha b, p_avl_linha c)
+{
+    if (b == NULL)
+    {
+        return c;
+    }
+
+    c = somar_linhas(b->esq, c);
+    c = somar_colunas(b->col, b->i, c);
+    c = somar_linhas(b->dir, c);
+
+    return c;
+}
+
+p_avl_linha somar(p_avl_linha a, p_avl_linha b)
+{
+    p_avl_linha c = copiar(a);
+    c = somar_linhas(b, c);
+    return c;
 }
