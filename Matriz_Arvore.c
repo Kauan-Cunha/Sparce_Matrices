@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "matriz_arvore.h"
+#include "Matriz_Arvore.h"
 #include <stdlib.h>
 
 p_avl_linha criar_matriz_arvore()
@@ -377,13 +377,11 @@ p_avl_linha mult_escalar(p_avl_linha a, int alpha)
         return NULL;
     }
 
-    p_avl_linha b = criar_matriz_arvore();
+    a->col = mult_escalar_coluna(a->col);
+    a->esq = mult_escalar(a->esq);
+    a->dir = mult_escalar(a->dir);
 
-    b->col = mult_escalar_coluna(a->col);
-    b->esq = mult_escalar(a->esq);
-    b->dir = mult_escalar(a->dir);
-
-    return b;
+    return a;
 }
 
 p_avl_linha somar_colunas(p_avl_coluna col_b, int i, p_avl_linha c)
