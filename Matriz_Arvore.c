@@ -364,10 +364,10 @@ p_avl_coluna mult_escalar_coluna(p_avl_coluna col, int alpha)
     }
 
     col->valor *= alpha;
-    col->esq = mult_escalar_coluna(col->esq);
-    col->dir = mult_escalar_coluna(col->dir);
+    col->esq = mult_escalar_coluna(col->esq, alpha);
+    col->dir = mult_escalar_coluna(col->dir, alpha);
 
-    return copia;
+    return col;
 }
 
 p_avl_linha mult_escalar(p_avl_linha a, int alpha)
@@ -377,9 +377,9 @@ p_avl_linha mult_escalar(p_avl_linha a, int alpha)
         return NULL;
     }
 
-    a->col = mult_escalar_coluna(a->col);
-    a->esq = mult_escalar(a->esq);
-    a->dir = mult_escalar(a->dir);
+    a->col = mult_escalar_coluna(a->col, alpha);
+    a->esq = mult_escalar(a->esq, alpha);
+    a->dir = mult_escalar(a->dir, alpha);
 
     return a;
 }
