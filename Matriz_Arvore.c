@@ -395,3 +395,113 @@ p_avl_linha somar(p_avl_linha a, p_avl_linha b)
     c = somar_linhas(b, c);
     return c;
 }
+
+/* -------------------------------------------------
+FUNÇÕES AUXILIARES PARA A MULTIPLICAÇÃO
+-------------------------------------------------
+*/
+
+// Esta função itera sobre as colunas da linha 'l' de B (os B_lj)
+// e atualiza a matriz C para cada produto A_il * B_lj
+void iterar_colunas_B_e_atualizar_C(p_avl_coluna no_B_col, // Nó atual da coluna de B
+                                    p_avl_linha *p_C,      // Ponteiro para a raiz de C
+                                    int i_A,               // A linha 'i' do elemento de A
+                                    int val_A)             // O valor A_il
+{
+    if (no_B_col == NULL)
+    {
+        return;
+    }
+
+    // Travessia in-order
+    iterar_colunas_B_e_atualizar_C(no_B_col->esq, p_C, i_A, val_A);
+
+    // Processa o nó B_lj atual
+    int j_B = no_B_col->j;
+    int val_B = no_B_col->valor;
+
+    int produto = val_A * val_B;
+
+    if (produto != 0)
+    {
+        // Acumula o produto em C[i_A][j_B]
+        int val_atual_C = acessar_elemento(i_A, j_B, *p_C);
+
+        // A função inserir_elemento retorna a nova raiz (caso haja rotação)
+        // Por isso, precisamos atualizar a raiz C através do ponteiro *p_C
+        *p_C = inserir_elemento(val_atual_C + produto, i_A, j_B, *p_C);
+    }
+
+    iterar_colunas_B_e_atualizar_C(no_B_col->dir, p_C, i_A, val_A);
+}
+
+// Esta função itera sobre as colunas da linha 'i' de A (os A_il)
+void iterar_colunas_A(p_avl_coluna no_A_col, // Nó atual da coluna de A
+                      p_avl_linha B,         // Raiz da matriz B
+                      p_avl_linha *p_C,      // Ponteiro para a raiz de C
+                      int i_A)               // A linha 'i' atual de A
+{
+    if (no_A_col == NULL)
+    {
+        return;
+    }
+
+    // Travessia in-order
+    iterar_colunas_A(no_A_col->esq, B, p_C, i_A);
+
+    // Processa o nó A_il atual
+    int l_A = no_A_col->j; // O 'j' da AVL_Coluna de A é o índice 'l'
+    int val_A = no_A_col->valor;
+
+    // Para este A_il, precisamos encontrar a linha 'l' (que é l_A) em B
+    p_avl_linha no_linha_B = buscar_entrada_linhas(B, l_A);
+
+    if (no_linha_B != NULL)
+    {
+        // Se a linha 'l' de B existe, itere sobre suas colunas (os B_lj)
+        iterar_colunas_B_e_atualizar_C(no_linha_B->col, p_C, i_A, val_A);
+    }
+
+    iterar_colunas_A(no_A_col->dir, B, p_C, i_A);
+}
+
+// Esta função itera sobre as linhas 'i' de A
+void iterar_linhas_A(p_avl_linha no_A_lin, // Nó atual da linha de A
+                     p_avl_linha B,        // Raiz da matriz B
+                     p_avl_linha *p_C)     // Ponteiro para a raiz de C
+{
+    if (no_A_lin == NULL)
+    {
+        return;
+    }
+
+    // Travessia in-order
+    iterar_linhas_A(no_A_lin->esq, B, p_C);
+
+    // Processa o nó da linha 'i' de A
+    int i_A = no_A_lin->i;
+    // Itera sobre todas as colunas (A_il) desta linha 'i'
+    iterar_colunas_A(no_A_lin->col, B, p_C, i_A);
+
+    iterar_linhas_A(no_A_lin->dir, B, p_C);
+}
+
+/* -------------------------------------------------
+FUNÇÃO PRINCIPAL DA MULTIPLICAÇÃO
+-------------------------------------------------
+*/
+
+p_avl_linha multiplicacao_matrizes(p_avl_linha A, p_avl_linha B)
+{
+    // 1. C começa como uma árvore vazia (raiz NULL)
+    //    Não use `criar_matriz_arvore()`, veja a nota abaixo.
+    p_avl_linha C = NULL;
+
+    // 2. Inicia a cascata de iterações recursivas
+    //    A raiz C é passada por referência (&C) para que possa
+    //    ser modificada pelas inserções.
+    iterar_linhas_A(A, B, &C);
+
+    // 3. Retorna a raiz da matriz C resultante
+    return C;
+}
