@@ -1,6 +1,6 @@
 #define MAX 2003 // bom tamanho de hash para k = 1000
 
-#include "stdlib.h"
+#include <stdlib.h>
 #include "stdio.h"
 
 typedef struct No_hash *p_no_hash;

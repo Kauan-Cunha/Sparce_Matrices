@@ -1,4 +1,4 @@
-#include "Hash.h"
+#include "hash.h"
 
 p_matriz_esparsa criar_matriz(int n, int m, int tamanho)
 {
@@ -182,5 +182,3 @@ p_matrizes atualiza_multiplicacao_matrizes(p_matrizes matrizesA, p_matrizes matr
     C->transposta = multiplicar_matrizes(matrizesB->transposta, matrizesA->transposta);
     return C;
 }
-
-
