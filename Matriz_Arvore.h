@@ -1,5 +1,7 @@
 typedef struct AVL_Linha AVL_Linha;
 typedef struct AVL_Coluna AVL_Coluna;
+typedef struct Matriz_Arvore Matriz_Arvore;
+
 
 typedef AVL_Linha *p_avl_linha;
 typedef AVL_Coluna *p_avl_coluna;
