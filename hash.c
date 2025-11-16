@@ -182,5 +182,3 @@ p_matrizes atualiza_multiplicacao_matrizes(p_matrizes matrizesA, p_matrizes matr
     C->transposta = multiplicar_matrizes(matrizesB->transposta, matrizesA->transposta);
     return C;
 }
-
-
