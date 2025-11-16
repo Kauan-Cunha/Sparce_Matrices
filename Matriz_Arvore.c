@@ -5,7 +5,6 @@
 p_avl_linha criar_matriz_arvore()
 {
     p_avl_linha a = malloc(sizeof(AVL_Linha));
-    a->j = -1;
     a->col = NULL;
     a->esq = NULL;
     a->dir = NULL;
@@ -357,7 +356,37 @@ p_avl_linha copiar(p_avl_linha a)
     return b;
 }
 
-p_avl_coluna somar_colunas(p_avl_coluna col_b, int i, p_avl_linha c)
+p_avl_coluna mult_escalar_coluna(p_avl_coluna col, int alpha)
+{
+    if (col == NULL)
+    {
+        return NULL;
+    }
+
+    col->valor *= alpha;
+    col->esq = mult_escalar_coluna(col->esq);
+    col->dir = mult_escalar_coluna(col->dir);
+
+    return copia;
+}
+
+p_avl_linha mult_escalar(p_avl_linha a, int alpha)
+{
+    if (a == NULL)
+    {
+        return NULL;
+    }
+
+    p_avl_linha b = criar_matriz_arvore();
+
+    b->col = mult_escalar_coluna(a->col);
+    b->esq = mult_escalar(a->esq);
+    b->dir = mult_escalar(a->dir);
+
+    return b;
+}
+
+p_avl_linha somar_colunas(p_avl_coluna col_b, int i, p_avl_linha c)
 {
     if (col_b == NULL)
     {
@@ -370,7 +399,7 @@ p_avl_coluna somar_colunas(p_avl_coluna col_b, int i, p_avl_linha c)
     int valor_a = acessar_elemento(i, j, c);
     int valor_b = col_b->valor;
 
-    c = inserir_elemento(valor_a, i, j, valor_a + valor_b);
+    c = inserir_elemento(valor_a + valor_b, i, j, c);
     c = somar_colunas(col_b->dir, i, c);
     return c;
 }
@@ -493,15 +522,10 @@ FUNÇÃO PRINCIPAL DA MULTIPLICAÇÃO
 
 p_avl_linha multiplicacao_matrizes(p_avl_linha A, p_avl_linha B)
 {
-    // 1. C começa como uma árvore vazia (raiz NULL)
-    //    Não use `criar_matriz_arvore()`, veja a nota abaixo.
+
     p_avl_linha C = NULL;
 
-    // 2. Inicia a cascata de iterações recursivas
-    //    A raiz C é passada por referência (&C) para que possa
-    //    ser modificada pelas inserções.
     iterar_linhas_A(A, B, &C);
 
-    // 3. Retorna a raiz da matriz C resultante
     return C;
 }
