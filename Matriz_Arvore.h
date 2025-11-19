@@ -44,7 +44,7 @@ int acessar_matriz(p_matriz_arvore matriz, int i, int j);
 
 p_matriz_arvore transposta(p_matriz_arvore matriz);
 
-p_matriz_arvore multiplicacao_matriz()
+p_matriz_arvore multiplicacao_matriz(p);
 
 p_avl_linha criar_matriz_arvore();
 

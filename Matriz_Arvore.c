@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "Matriz_Arvore.h"
+#include "Matriz_Arvore.h"
 #include <stdlib.h>
 
 p_avl_linha criar_linha()

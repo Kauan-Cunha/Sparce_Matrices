@@ -1,7 +1,8 @@
-#define MAX 2003 // bom tamanho de hash para k = 1000
-
 #include <stdlib.h>
 #include "stdio.h"
+
+#define INICIAL 97
+#define FATOR_CARGA 0.75
 
 typedef struct No_hash *p_no_hash;
 typedef struct Matriz_esparsa *p_matriz_esparsa;
@@ -9,18 +10,19 @@ typedef struct Matrizes *p_matrizes;
 
 struct No_hash
 {
-    int i, j;            // posição
-    int valor;           // valor não nulo
-    p_no_hash prox_hash; // ponteiro para o próximo nó em caso de colisão
-    p_no_hash prox_linha;
+    int i, j;               // posição
+    int valor;              // valor não nulo
+    p_no_hash prox_hash;    // ponteiro para o próximo nó em caso de colisão
+    p_no_hash prox_todos;   // lista global
 };
 
 struct Matriz_esparsa
 {
     int n, m;               // dimensões da matriz
     int tamanho;            // tamanho da tabela hash
+    int usados;             // quantidade de nós existentes
     p_no_hash *tabela_hash; // vetor de ponteiros
-    p_no_hash *linhas;      // vetor de linhas
+    p_no_hash lista_todos;   // todos os nós
 };
 
 struct Matrizes
@@ -40,6 +42,10 @@ int acessar(p_matriz_esparsa A, int i, int j);
 ////////////////////////////// CRIAR MATRIZES //////////////////////////////////
 p_matriz_esparsa criar_matriz(int n, int m, int tamanho);
 p_matrizes criar_matrizes(int n, int m, int tamanho);
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////// REHASH /////////////////////////////////////
+void rehash(p_matriz_esparsa A);
 ////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////// INSERÇÃO //////////////////////////////////////
