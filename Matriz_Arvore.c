@@ -1,8 +1,8 @@
 #include <stdlib.h>
-#include "matriz_arvore.h"
+#include "Matriz_Arvore.h"
 #include <stdlib.h>
 
-p_avl_linha criar_matriz_arvore()
+p_avl_linha criar_linha()
 {
     p_avl_linha a = malloc(sizeof(AVL_Linha));
     a->col = NULL;
@@ -11,6 +11,40 @@ p_avl_linha criar_matriz_arvore()
     return a;
 }
 
+
+/*
+    Inicializa a matriz. Isso é a avl_linha para matriz e sua transposta.
+ */
+p_matriz_arvore criar_matriz(){
+    p_matriz_arvore a = malloc(sizeof(Matriz_Arvore));
+
+    a->matriz = criar_linha();
+    a->transposta = criar_linha();
+
+    return a;
+}
+
+/* 
+    Inserir na matriz e na transposta. Invertendo apenas o indice dos elementos
+*/
+void inserir_matriz(p_matriz_arvore matriz, int i, int j, int valor){
+    matriz->matriz = inserir_elemento(valor, i, j, matriz->matriz);
+
+    matriz->transposta = inserir_elemento(valor, j, i, matriz->transposta);
+
+    return;
+}
+
+/*
+    Acessar Matriz atraves de um índice
+*/
+int acessar_matriz(p_matriz_arvore matriz, int i, int j){
+    acessar_elemento(i, j, matriz->matriz);
+}
+
+/*
+    Retorna o maior inteiro entre 2.
+*/
 int max(int a, int b)
 {
     return (a > b) ? a : b;
@@ -75,7 +109,6 @@ p_avl_coluna rotacao_esquerda_col(p_avl_coluna x)
 
 p_avl_coluna inserir_avl_coluna(p_avl_coluna raiz, p_avl_coluna nova_entrada)
 {
-    // caso base
     if (raiz == NULL)
     {
         nova_entrada->alt = 1; // Altura de folha
@@ -356,34 +389,29 @@ p_avl_linha copiar(p_avl_linha a)
     return b;
 }
 
-p_avl_coluna mult_escalar_coluna(p_avl_coluna col, int alpha)
+void mult_escalar_coluna(p_avl_coluna col, int alpha)
 {
     if (col == NULL)
     {
-        return NULL;
+        return;
     }
 
     col->valor *= alpha;
-    col->esq = mult_escalar_coluna(col->esq);
-    col->dir = mult_escalar_coluna(col->dir);
-
-    return copia;
+    mult_escalar_coluna(col->esq, alpha);
+    mult_escalar_coluna(col->dir, alpha);
 }
 
-p_avl_linha mult_escalar(p_avl_linha a, int alpha)
+void mult_escalar(p_avl_linha a, int alpha)
 {
     if (a == NULL)
     {
-        return NULL;
+        return;
     }
 
-    p_avl_linha b = criar_matriz_arvore();
+    mult_escalar_coluna(a->col, alpha);
+    mult_escalar(a->esq, alpha);
+    mult_escalar(a->dir, alpha);
 
-    b->col = mult_escalar_coluna(a->col);
-    b->esq = mult_escalar(a->esq);
-    b->dir = mult_escalar(a->dir);
-
-    return b;
 }
 
 p_avl_linha somar_colunas(p_avl_coluna col_b, int i, p_avl_linha c)
@@ -425,24 +453,13 @@ p_avl_linha somar(p_avl_linha a, p_avl_linha b)
     return c;
 }
 
-/* -------------------------------------------------
-FUNÇÕES AUXILIARES PARA A MULTIPLICAÇÃO
--------------------------------------------------
-*/
-
-// Esta função itera sobre as colunas da linha 'l' de B (os B_lj)
-// e atualiza a matriz C para cada produto A_il * B_lj
-void iterar_colunas_B_e_atualizar_C(p_avl_coluna no_B_col, // Nó atual da coluna de B
-                                    p_avl_linha *p_C,      // Ponteiro para a raiz de C
-                                    int i_A,               // A linha 'i' do elemento de A
-                                    int val_A)             // O valor A_il
+void iterar_colunas_B_e_atualizar_C(p_avl_coluna no_B_col, p_avl_linha *p_C, int i_A, int val_A)             
 {
     if (no_B_col == NULL)
     {
         return;
     }
 
-    // Travessia in-order
     iterar_colunas_B_e_atualizar_C(no_B_col->esq, p_C, i_A, val_A);
 
     // Processa o nó B_lj atual
@@ -465,10 +482,7 @@ void iterar_colunas_B_e_atualizar_C(p_avl_coluna no_B_col, // Nó atual da colun
 }
 
 // Esta função itera sobre as colunas da linha 'i' de A (os A_il)
-void iterar_colunas_A(p_avl_coluna no_A_col, // Nó atual da coluna de A
-                      p_avl_linha B,         // Raiz da matriz B
-                      p_avl_linha *p_C,      // Ponteiro para a raiz de C
-                      int i_A)               // A linha 'i' atual de A
+void iterar_colunas_A(p_avl_coluna no_A_col, p_avl_linha B, p_avl_linha *p_C, int i_A)               
 {
     if (no_A_col == NULL)
     {
@@ -515,14 +529,8 @@ void iterar_linhas_A(p_avl_linha no_A_lin, // Nó atual da linha de A
     iterar_linhas_A(no_A_lin->dir, B, p_C);
 }
 
-/* -------------------------------------------------
-FUNÇÃO PRINCIPAL DA MULTIPLICAÇÃO
--------------------------------------------------
-*/
-
 p_avl_linha multiplicacao_matrizes(p_avl_linha A, p_avl_linha B)
 {
-
     p_avl_linha C = NULL;
 
     iterar_linhas_A(A, B, &C);
