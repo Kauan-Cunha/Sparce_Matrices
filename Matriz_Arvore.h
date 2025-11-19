@@ -37,16 +37,21 @@ struct  Matriz_Arvore
 //     p_avl_linha raiz;
 // } Matriz_Arvore;
 
-
+/**
+ * Funções para o contâiner de Matriz (usar ela como FrameWork)
+ */
 void inserir_matriz(p_matriz_arvore matriz, int i, int j, int valor);
 
 int acessar_matriz(p_matriz_arvore matriz, int i, int j);
 
 p_matriz_arvore transposta(p_matriz_arvore matriz);
 
-p_matriz_arvore multiplicacao_matriz(p);
+p_matriz_arvore multiplicacao_matriz(p_matriz_arvore A, p_matriz_arvore B);
 
-p_avl_linha criar_matriz_arvore();
+
+/**
+ *  IMPLEMENTAM A AVL PARA COLUNAS
+ */
 
 // insere em log(k)
 p_avl_coluna inserir_avl(p_avl_coluna raiz, p_avl_coluna nova_entrada);
@@ -54,24 +59,30 @@ p_avl_coluna inserir_avl(p_avl_coluna raiz, p_avl_coluna nova_entrada);
 // acessa elemento em log(k)
 int buscar_entrada(p_avl_linha arvore, int j);
 
-p_avl_linha criar_matriz_arvore();
-
+// retorna max entre 2 inteiros
 int max(int a, int b);
 
+// retorna a altua de uma arvore coluna
 int altura_col(p_avl_coluna no);
 
+// atualiza a altura dado um balanceamento
 void atualiza_altura_col(p_avl_coluna no);
 
+// balanceia a arvore coluna
 int f_balanceamento_col(p_avl_coluna no);
 
+// rotaciona avl coluna para direita
 p_avl_coluna rotacao_direita_col(p_avl_coluna y);
 
+// rotaciona avl coluna para esquerda
 p_avl_coluna rotacao_esquerda_col(p_avl_coluna x);
 
+// inseri elemento em avl coluna
 p_avl_coluna inserir_avl_coluna(p_avl_coluna raiz, p_avl_coluna nova_entrada);
 
 int altura_lin(p_avl_linha no);
 
+// atualiza a altura avl linha 
 void atualiza_altura_lin(p_avl_linha no);
 
 int f_balanceamento_lin(p_avl_linha no);

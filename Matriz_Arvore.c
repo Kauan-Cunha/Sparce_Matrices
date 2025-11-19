@@ -12,7 +12,6 @@ p_avl_linha criar_linha()
     return a;
 }
 
-
 /*
     Inicializa a matriz. Isso é a avl_linha para matriz e sua transposta.
  */
@@ -40,7 +39,53 @@ void inserir_matriz(p_matriz_arvore matriz, int i, int j, int valor){
     Acessar Matriz atraves de um índice
 */
 int acessar_matriz(p_matriz_arvore matriz, int i, int j){
-    acessar_elemento(i, j, matriz->matriz);
+    return acessar_elemento(i, j, matriz->matriz);
+}
+
+/*
+    Realiza a função entre duas matrizes(container) e retorna uma matriz C (container)
+*/
+p_matriz_arvore multiplicacao_matriz(p_matriz_arvore A, p_matriz_arvore B){
+    p_matriz_arvore C = criar_matriz();
+    
+    C->matriz = multiplicacao_matrizes(A->matriz, B->matriz);
+    C->transposta = multiplicacao_matrizes(B->transposta, B->transposta);
+
+    return C;
+}
+
+/*
+    Retorna Transposta
+ */
+p_matriz_arvore transposta(p_matriz_arvore matriz){
+    return matriz->transposta;
+}
+
+/*
+    multiplica matriz por escalar
+*/
+void escalar(int escalar, p_matriz_arvore matriz){
+    //zera todas as entradas e, portanto, não armazena nenhuma entrada
+    if(escalar == 0){
+        matriz->matriz = NULL;
+        matriz->transposta = NULL;
+        return;
+    }
+
+    mult_escalar(matriz->matriz, escalar);
+    mult_escalar(matriz->transposta, escalar);
+}
+
+/*
+    Retona a matriz resultado da soma de A e B
+*/
+p_matriz_arvore soma_matrizez(p_matriz_arvore A, p_matriz_arvore B){
+    p_matriz_arvore C = criar_matriz();
+
+    C->matriz = somar(A->matriz, B->matriz);
+    C->transposta = somar(A->transposta, B->transposta);
+
+    return C;
 }
 
 /*
@@ -50,7 +95,6 @@ int max(int a, int b)
 {
     return (a > b) ? a : b;
 }
-
 /*
 FUNÇÕES PARA AVL COLUNA
 */
