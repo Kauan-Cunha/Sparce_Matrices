@@ -58,7 +58,11 @@ p_matriz_arvore multiplicacao_matriz(p_matriz_arvore A, p_matriz_arvore B){
     Retorna Transposta
  */
 p_matriz_arvore transposta(p_matriz_arvore matriz){
-    return matriz->transposta;
+    p_matriz_arvore transp = criar_matriz();
+    transp->matriz = matriz->transposta;
+    transp->transposta = matriz->matriz;
+
+    return transp;
 }
 
 /*
@@ -79,7 +83,7 @@ void escalar(int escalar, p_matriz_arvore matriz){
 /*
     Retona a matriz resultado da soma de A e B
 */
-p_matriz_arvore soma_matrizez(p_matriz_arvore A, p_matriz_arvore B){
+p_matriz_arvore soma_matrizes(p_matriz_arvore A, p_matriz_arvore B){
     p_matriz_arvore C = criar_matriz();
 
     C->matriz = somar(A->matriz, B->matriz);
@@ -95,6 +99,7 @@ int max(int a, int b)
 {
     return (a > b) ? a : b;
 }
+
 /*
 FUNÇÕES PARA AVL COLUNA
 */
@@ -104,6 +109,7 @@ int altura_col(p_avl_coluna no)
         return 0;
     return no->alt;
 }
+
 
 void atualiza_altura_col(p_avl_coluna no)
 {
@@ -162,17 +168,17 @@ p_avl_coluna inserir_avl_coluna(p_avl_coluna raiz, p_avl_coluna nova_entrada)
         return nova_entrada;
     }
     // busca onde inserir
-    if (nova_entrada->j < raiz->j)
+    if (nova_entrada->j < raiz->j)          // se maior, procura na arvore filha a direita.
     {
-        raiz->esq = inserir_avl_coluna(raiz->esq, nova_entrada);
+        raiz->esq = inserir_avl_coluna(raiz->esq, nova_entrada);    
     }
     else if (nova_entrada->j > raiz->j)
     {
-        raiz->dir = inserir_avl_coluna(raiz->dir, nova_entrada);
+        raiz->dir = inserir_avl_coluna(raiz->dir, nova_entrada); //se menor, procura na arvore filha a esquerda.
     }
     else
     {
-        raiz->valor = nova_entrada->valor;
+        raiz->valor = nova_entrada->valor;          // se igual, significa que já existe um elemento onde queremos adicionar, então basta atualizar seu valor.
         return raiz;
     }
 
@@ -387,7 +393,7 @@ p_avl_linha inserir_elemento(int valor, int i, int j, p_avl_linha raiz_linhas)
         no_linha = buscar_entrada_linhas(raiz_linhas, i);
     }
 
-    if (no_linha != NULL)
+    else 
     {
         p_avl_coluna novo_elemento = calloc(1, sizeof(AVL_Coluna));
         novo_elemento->j = j;
@@ -423,7 +429,7 @@ p_avl_linha copiar(p_avl_linha a)
         return NULL;
     }
 
-    p_avl_linha b = criar_matriz_arvore();
+    p_avl_linha b = criar_linha();
 
     b->i = a->i;
     b->alt = a->alt;

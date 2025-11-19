@@ -1,3 +1,6 @@
+#ifndef MATRIZ_ARVORE_H
+#define MATRIZ_ARVORE_H
+
 typedef struct AVL_Linha AVL_Linha;
 typedef struct AVL_Coluna AVL_Coluna;
 typedef struct Matriz_Arvore Matriz_Arvore;
@@ -40,6 +43,9 @@ struct  Matriz_Arvore
 /**
  * Funções para o contâiner de Matriz (usar ela como FrameWork)
  */
+
+p_matriz_arvore criar_matriz();
+
 void inserir_matriz(p_matriz_arvore matriz, int i, int j, int valor);
 
 int acessar_matriz(p_matriz_arvore matriz, int i, int j);
@@ -52,6 +58,8 @@ p_matriz_arvore multiplicacao_matriz(p_matriz_arvore A, p_matriz_arvore B);
 /**
  *  IMPLEMENTAM A AVL PARA COLUNAS
  */
+
+void mult_escalar(p_avl_linha a, int alpha);
 
 // insere em log(k)
 p_avl_coluna inserir_avl(p_avl_coluna raiz, p_avl_coluna nova_entrada);
@@ -118,3 +126,10 @@ void iterar_colunas_A(p_avl_coluna no_A_col, p_avl_linha B, p_avl_linha *p_C, in
 void iterar_linhas_A(p_avl_linha no_A_lin, p_avl_linha B, p_avl_linha *p_C);
 
 p_avl_linha multiplicacao_matrizes(p_avl_linha A, p_avl_linha B);
+// Funções que estavam faltando:
+void escalar(int escalar, p_matriz_arvore matriz);
+
+// Corrigi o nome (estava soma_matrizez com 'z')
+p_matriz_arvore soma_matrizes(p_matriz_arvore A, p_matriz_arvore B);
+
+#endif
