@@ -49,7 +49,7 @@ p_matriz_arvore multiplicacao_matriz(p_matriz_arvore A, p_matriz_arvore B){
     p_matriz_arvore C = criar_matriz();
     
     C->matriz = multiplicacao_matrizes(A->matriz, B->matriz);
-    C->transposta = multiplicacao_matrizes(B->transposta, B->transposta);
+    C->transposta = multiplicacao_matrizes(B->transposta, A->transposta);
 
     return C;
 }
@@ -59,6 +59,7 @@ p_matriz_arvore multiplicacao_matriz(p_matriz_arvore A, p_matriz_arvore B){
  */
 p_matriz_arvore transposta(p_matriz_arvore matriz){
     p_matriz_arvore transp = criar_matriz();
+
     transp->matriz = matriz->transposta;
     transp->transposta = matriz->matriz;
 
@@ -101,7 +102,7 @@ int max(int a, int b)
 }
 
 /*
-FUNÇÕES PARA AVL COLUNA
+    Retorna a altura de um nó na arvore avl coluna
 */
 int altura_col(p_avl_coluna no)
 {
@@ -111,6 +112,9 @@ int altura_col(p_avl_coluna no)
 }
 
 
+/*
+    Atualiza a altura da avl coluna para balancear
+*/
 void atualiza_altura_col(p_avl_coluna no)
 {
     if (no != NULL)
@@ -119,6 +123,9 @@ void atualiza_altura_col(p_avl_coluna no)
     }
 }
 
+/*
+    Realiza balanceamento da avl coluna
+*/
 int f_balanceamento_col(p_avl_coluna no)
 {
     if (no == NULL)
@@ -126,6 +133,9 @@ int f_balanceamento_col(p_avl_coluna no)
     return altura_col(no->esq) - altura_col(no->dir);
 }
 
+/*
+    Rotaciona avl coluna para direita.
+*/
 p_avl_coluna rotacao_direita_col(p_avl_coluna y)
 {
     p_avl_coluna x = y->esq;
@@ -142,6 +152,9 @@ p_avl_coluna rotacao_direita_col(p_avl_coluna y)
     return x;
 }
 
+/*
+    Rotaciona arvore avl coluna para esquerda
+*/
 p_avl_coluna rotacao_esquerda_col(p_avl_coluna x)
 {
     p_avl_coluna y = x->dir;
@@ -158,6 +171,9 @@ p_avl_coluna rotacao_esquerda_col(p_avl_coluna x)
     return y;
 }
 
+/*
+    inseri uma elemento "nó coluna" na arvore avl
+*/
 p_avl_coluna inserir_avl_coluna(p_avl_coluna raiz, p_avl_coluna nova_entrada)
 {
     if (raiz == NULL)
@@ -215,6 +231,10 @@ p_avl_coluna inserir_avl_coluna(p_avl_coluna raiz, p_avl_coluna nova_entrada)
 /*-------------------------------------
 FUNÇÕES AVL DA LINHA
 --------------------------------------*/
+
+/*
+    Retorna a altura de uma avl linha
+*/
 int altura_lin(p_avl_linha no)
 {
     if (no == NULL)
@@ -222,6 +242,9 @@ int altura_lin(p_avl_linha no)
     return no->alt;
 }
 
+/*
+    Atualiza altura de nó avl para balancear
+*/
 void atualiza_altura_lin(p_avl_linha no)
 {
     if (no != NULL)
@@ -230,6 +253,9 @@ void atualiza_altura_lin(p_avl_linha no)
     }
 }
 
+/*
+    Realiza balanceamento de avl linha
+*/
 int f_balanceamento_lin(p_avl_linha no)
 {
     if (no == NULL)
@@ -237,6 +263,9 @@ int f_balanceamento_lin(p_avl_linha no)
     return altura_lin(no->esq) - altura_lin(no->dir);
 }
 
+/*
+    Rotaciona avl para direita
+*/
 p_avl_linha rotacao_direita_lin(p_avl_linha y)
 {
     p_avl_linha x = y->esq;
@@ -251,6 +280,9 @@ p_avl_linha rotacao_direita_lin(p_avl_linha y)
     return x;
 }
 
+/*
+    Rotaciona avl para esquerda
+*/
 p_avl_linha rotacao_esquerda_lin(p_avl_linha x)
 {
     p_avl_linha y = x->dir;
@@ -265,6 +297,9 @@ p_avl_linha rotacao_esquerda_lin(p_avl_linha x)
     return y;
 }
 
+/*
+    Insere um "nó" linha na avl.
+*/
 p_avl_linha inserir_avl_linha(p_avl_linha raiz, p_avl_linha nova_entrada)
 {
     // caso base
@@ -321,6 +356,9 @@ p_avl_linha inserir_avl_linha(p_avl_linha raiz, p_avl_linha nova_entrada)
     return raiz;
 }
 
+/*
+    busca nó na arvore avl linha (O(log(k)))
+*/
 p_avl_linha buscar_entrada_linhas(p_avl_linha arvore, int i)
 {
     if (arvore == NULL)
@@ -340,6 +378,9 @@ p_avl_linha buscar_entrada_linhas(p_avl_linha arvore, int i)
     return buscar_entrada_linhas(arvore->esq, i);
 }
 
+/*
+    busca nó na arvore avl coluna (O(log(k)))
+*/
 p_avl_coluna buscar_entrada_colunas(p_avl_coluna arvore, int j)
 {
     if (arvore == NULL)
@@ -359,6 +400,9 @@ p_avl_coluna buscar_entrada_colunas(p_avl_coluna arvore, int j)
     return buscar_entrada_colunas(arvore->esq, j);
 }
 
+/*
+    Busca elemento na avl de avl. Procura a linha I, se encontrar, procura em I->colunas a coluna J.
+*/
 int acessar_elemento(int i, int j, p_avl_linha raiz_linhas)
 {
     p_avl_linha no_linha = buscar_entrada_linhas(raiz_linhas, i);
@@ -378,12 +422,15 @@ int acessar_elemento(int i, int j, p_avl_linha raiz_linhas)
     return elemento->valor;
 }
 
+/*
+    Insere elemento na avl de avl. Insere linha se não houver sido inserida ainda.
+*/
 p_avl_linha inserir_elemento(int valor, int i, int j, p_avl_linha raiz_linhas)
 {
     if (valor == 0){
         return raiz_linhas;
     }
-    
+
     p_avl_linha no_linha = buscar_entrada_linhas(raiz_linhas, i);
 
     if (no_linha == NULL)
@@ -397,18 +444,19 @@ p_avl_linha inserir_elemento(int valor, int i, int j, p_avl_linha raiz_linhas)
         no_linha = buscar_entrada_linhas(raiz_linhas, i);
     }
 
-    else 
-    {
+    if(no_linha != NULL){
         p_avl_coluna novo_elemento = calloc(1, sizeof(AVL_Coluna));
         novo_elemento->j = j;
         novo_elemento->valor = valor;
-
         no_linha->col = inserir_avl_coluna(no_linha->col, novo_elemento);
     }
 
     return raiz_linhas;
 }
 
+/*
+    retorna uma copia de uma avl coluna
+*/
 p_avl_coluna copiar_coluna(p_avl_coluna col)
 {
     if (col == NULL)
@@ -426,6 +474,9 @@ p_avl_coluna copiar_coluna(p_avl_coluna col)
     return copia;
 }
 
+/*
+    Retorna uma copia completa de uma avl linha de avl colunas. Aplca um DFS para acessar todos os nós. (O(k))
+*/
 p_avl_linha copiar(p_avl_linha a)
 {
     if (a == NULL)
@@ -444,6 +495,11 @@ p_avl_linha copiar(p_avl_linha a)
     return b;
 }
 
+/*****************************************************MULTIPLICAÇÂO ESCALAR*********************************************** */
+
+/*
+    Percecorre em dfs a avl_coluna todos os nós, multiplicando seus valores por um escalar alpha.
+*/
 void mult_escalar_coluna(p_avl_coluna col, int alpha)
 {
     if (col == NULL)
@@ -456,6 +512,9 @@ void mult_escalar_coluna(p_avl_coluna col, int alpha)
     mult_escalar_coluna(col->dir, alpha);
 }
 
+/*
+    Percecorre em dfs a avl_linha todos os nós, multiplicando seus valores por um escalar alpha.
+*/
 void mult_escalar(p_avl_linha a, int alpha)
 {
     if (a == NULL)
@@ -469,24 +528,34 @@ void mult_escalar(p_avl_linha a, int alpha)
 
 }
 
+/********************************************************************************************************** */
+
+/**************************************************SOMAR************************************************* */
+/*
+    Percorre a arvore coluna e realiza soma
+*/
+
 p_avl_linha somar_colunas(p_avl_coluna col_b, int i, p_avl_linha c)
 {
     if (col_b == NULL)
     {
         return c;
     }
-
+    
     c = somar_colunas(col_b->esq, i, c);
-
+    
     int j = col_b->j;
-    int valor_a = acessar_elemento(i, j, c);
+    int valor_a = acessar_elemento(i, j, c); 
     int valor_b = col_b->valor;
 
-    c = inserir_elemento(valor_a + valor_b, i, j, c);
+    c = inserir_elemento(valor_a + valor_b, i, j, c); 
     c = somar_colunas(col_b->dir, i, c);
     return c;
 }
 
+/*
+    Percorre por dfs todas as linhas da avl e faz a soma da coluna
+*/
 p_avl_linha somar_linhas(p_avl_linha b, p_avl_linha c)
 {
     if (b == NULL)
@@ -501,13 +570,19 @@ p_avl_linha somar_linhas(p_avl_linha b, p_avl_linha c)
     return c;
 }
 
+/*
+    Retorna soma de A + B
+ */
 p_avl_linha somar(p_avl_linha a, p_avl_linha b)
 {
     p_avl_linha c = copiar(a);
     c = somar_linhas(b, c);
     return c;
 }
+/********************************************************************************************************** */
 
+
+/***************************************MULTIPLICAÇÃO DE MATRIZES***************************************** */
 void iterar_colunas_B_e_atualizar_C(p_avl_coluna no_B_col, p_avl_linha *p_C, int i_A, int val_A)             
 {
     if (no_B_col == NULL)
@@ -525,11 +600,9 @@ void iterar_colunas_B_e_atualizar_C(p_avl_coluna no_B_col, p_avl_linha *p_C, int
 
     if (produto != 0)
     {
-        // Acumula o produto em C[i_A][j_B]
+
         int val_atual_C = acessar_elemento(i_A, j_B, *p_C);
 
-        // A função inserir_elemento retorna a nova raiz (caso haja rotação)
-        // Por isso, precisamos atualizar a raiz C através do ponteiro *p_C
         *p_C = inserir_elemento(val_atual_C + produto, i_A, j_B, *p_C);
     }
 
@@ -544,29 +617,22 @@ void iterar_colunas_A(p_avl_coluna no_A_col, p_avl_linha B, p_avl_linha *p_C, in
         return;
     }
 
-    // Travessia in-order
     iterar_colunas_A(no_A_col->esq, B, p_C, i_A);
 
-    // Processa o nó A_il atual
-    int l_A = no_A_col->j; // O 'j' da AVL_Coluna de A é o índice 'l'
+    int l_A = no_A_col->j;
     int val_A = no_A_col->valor;
 
-    // Para este A_il, precisamos encontrar a linha 'l' (que é l_A) em B
     p_avl_linha no_linha_B = buscar_entrada_linhas(B, l_A);
 
     if (no_linha_B != NULL)
     {
-        // Se a linha 'l' de B existe, itere sobre suas colunas (os B_lj)
         iterar_colunas_B_e_atualizar_C(no_linha_B->col, p_C, i_A, val_A);
     }
 
     iterar_colunas_A(no_A_col->dir, B, p_C, i_A);
 }
 
-// Esta função itera sobre as linhas 'i' de A
-void iterar_linhas_A(p_avl_linha no_A_lin, // Nó atual da linha de A
-                     p_avl_linha B,        // Raiz da matriz B
-                     p_avl_linha *p_C)     // Ponteiro para a raiz de C
+void iterar_linhas_A(p_avl_linha no_A_lin, p_avl_linha B, p_avl_linha *p_C)     
 {
     if (no_A_lin == NULL)
     {
@@ -576,9 +642,9 @@ void iterar_linhas_A(p_avl_linha no_A_lin, // Nó atual da linha de A
     // Travessia in-order
     iterar_linhas_A(no_A_lin->esq, B, p_C);
 
-    // Processa o nó da linha 'i' de A
     int i_A = no_A_lin->i;
-    // Itera sobre todas as colunas (A_il) desta linha 'i'
+
+    // Itera sobre todas as colunas
     iterar_colunas_A(no_A_lin->col, B, p_C, i_A);
 
     iterar_linhas_A(no_A_lin->dir, B, p_C);
@@ -592,3 +658,5 @@ p_avl_linha multiplicacao_matrizes(p_avl_linha A, p_avl_linha B)
 
     return C;
 }
+
+/******************************************************************************************** */
