@@ -213,9 +213,8 @@ p_matriz_esparsa multiplicar_matrizes(p_matriz_esparsa A, p_matriz_esparsa B)
             // vai pro proximo elemento nao nulo de A
             a = a->prox_todos;
         }
-
-        return C;
     }
+    return C;
 }
 
 p_matrizes atualiza_multiplicacao_matrizes(p_matrizes matrizesA, p_matrizes matrizesB)
