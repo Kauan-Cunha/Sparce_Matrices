@@ -20,7 +20,7 @@ p_matrizes criar_matrizes(int n, int m, int tamanho)
     return matrizes;
 }
 
-long int chave_hash(int i, int j)
+unsigned long long chave_hash(int i, int j)
 {
     unsigned long long key = ((unsigned long long)i << 32) | (unsigned long long)j;
 
@@ -33,13 +33,13 @@ long int chave_hash(int i, int j)
     key *= C2;
     key ^= key >> 33;
 
-    return (long int)key;
+    return key;
 }
 
 int acessar(p_matriz_esparsa A, int i, int j)
 {
     int chave = chave_hash(i, j) % A->tamanho;
-    p_no_hash atual = A->tabela_hash[chave]; // acessa o nó atual através do hash em tempo esperado O(1)
+    p_no_hash atual = A->tabela_hash[chave]; // acessa o nó atual através do hash em auxo esperado O(1)
 
     while (atual)
     {
@@ -76,7 +76,7 @@ void inserir_atualizar(p_matriz_esparsa A, int i, int j, int valor)
         return;
 
     int chave = chave_hash(i, j) % A->tamanho;
-    p_no_hash atual = A->tabela_hash[chave]; // acessa o nó atual através do hash em tempo esperado O(1)
+    p_no_hash atual = A->tabela_hash[chave]; // acessa o nó atual através do hash em auxo esperado O(1)
 
     while (atual)
     {
@@ -148,13 +148,14 @@ void multiplicar_por_escalar(p_matriz_esparsa A, int alpha)
         p_no_hash atual = A->lista_todos;
         while (atual)
         {
-            p_no_hash temp = atual;
+            p_no_hash aux = atual;
             atual = atual->prox_todos;
-            free(temp);
+            free(aux);
         }
 
         A->lista_todos = NULL;
         A->usados = 0;
+        A->tamanho = INICIAL;
 
         // limpa tabela
         for (int k = 0; k < A->tamanho; k++)

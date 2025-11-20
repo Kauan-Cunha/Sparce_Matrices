@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "Hash.h" // Inclui as definições da sua ESTRUTURA HASH
 
-// O seu Hash.h define MAX (provavelmente 2003)
 // Vamos usá-lo como o tamanho da tabela hash.
 #define TAMANHO_HASH INICIAL
 
@@ -143,7 +142,7 @@ int main()
     printf("================================\n\n");
     
     // Resultado Esperado (S = A + B):
-    // S = [  1   7   3   0 ]
+    // S = [  1   7   0   0 ]
     //     [  0   0   1   0 ]
     //     [  2   0   0   0 ]
     //     [  5   0  -1   4 ]

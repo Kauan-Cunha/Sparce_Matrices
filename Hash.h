@@ -10,10 +10,10 @@ typedef struct Matrizes *p_matrizes;
 
 struct No_hash
 {
-    int i, j;               // posição
-    int valor;              // valor não nulo
-    p_no_hash prox_hash;    // ponteiro para o próximo nó em caso de colisão
-    p_no_hash prox_todos;   // lista global
+    int i, j;             // posição
+    int valor;            // valor não nulo
+    p_no_hash prox_hash;  // ponteiro para o próximo nó em caso de colisão
+    p_no_hash prox_todos; // lista global
 };
 
 struct Matriz_esparsa
@@ -22,7 +22,7 @@ struct Matriz_esparsa
     int tamanho;            // tamanho da tabela hash
     int usados;             // quantidade de nós existentes
     p_no_hash *tabela_hash; // vetor de ponteiros
-    p_no_hash lista_todos;   // todos os nós
+    p_no_hash lista_todos;  // todos os nós
 };
 
 struct Matrizes
@@ -32,7 +32,7 @@ struct Matrizes
 };
 
 //////////////////////////////////// HASH //////////////////////////////////////
-long int chave_hash(int i, int j);
+unsigned long long chave_hash(int i, int j);
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////// ACESSAR /////////////////////////////////////
