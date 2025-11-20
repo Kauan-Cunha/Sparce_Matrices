@@ -207,12 +207,12 @@ p_matriz_esparsa multiplicar_matrizes(p_matriz_esparsa A, p_matriz_esparsa B)
                 int valor = acessar(C, i, j) + Aik * b->valor;
                 inserir_atualizar(C, i, j, valor);
 
-                // vai pro proximo elemento nao nulo de B
-                b = b->prox_todos;
             }
-            // vai pro proximo elemento nao nulo de A
-            a = a->prox_todos;
+            // vai pro proximo elemento nao nulo de B
+            b = b->prox_todos;
         }
+        // vai pro proximo elemento nao nulo de A
+        a = a->prox_todos;
     }
     return C;
 }
