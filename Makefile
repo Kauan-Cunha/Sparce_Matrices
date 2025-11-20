@@ -1,52 +1,70 @@
-# Compilador e flags
+# Define o compilador e as flags
 CC = gcc
-CFLAGS = -Wall -Wextra -g
+# O -I agora aponta para 'source/' para resolver os includes (ex: #include "hash/Hash.h")
+CFLAGS = -Wall -Wextra -g -Isource
 
-# Arquivos Objetos
-OBJ_ARVORE = Matriz_Arvore.o
-OBJ_HASH = Hash.o
+# Nomes dos Executáveis
+EXEC_AVL = teste_avl
+EXEC_HASH = teste_hash
 
-# Executáveis a serem gerados
-TARGETS = main_hash main_avl
+# Diretório para os Arquivos Objeto (.o)
+OBJ_DIR = bin
 
-# --- Regra Principal (compila tudo) ---
-all: $(TARGETS)
+# Fontes (Caminhos a partir do diretório raiz)
+SRCS_AVL = source/main_avl.c source/arvore/Matriz_Arvore.c
+SRCS_HASH = source/main_hash.c source/hash/Hash.c
 
+# Objetos (Mapeia as fontes para o diretório bin/)
+# Ex: source/main_avl.c -> bin/source/main_avl.o
+OBJS_AVL = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS_AVL))
+OBJS_HASH = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCS_HASH))
 
-# --- Regra para 'main_hash' (Teste Hash) ---
-main_hash: main_hash.o $(OBJ_HASH)
-	$(CC) $(CFLAGS) -o main_hash main_hash.o $(OBJ_HASH)
+# ----------------------------------------------------------------------
+# Regras de Compilação
+# ----------------------------------------------------------------------
 
-# --- Regra para 'main_avl' (Teste avl O(1)) ---
-main_avl: main_avl.o $(OBJ_ARVORE)
-	$(CC) $(CFLAGS) -o main_avl main_avl.o $(OBJ_ARVORE)
+# Regra Principal (compila tudo)
+all: $(EXEC_AVL) $(EXEC_HASH)
 
-# --- Compilação dos Objetos (.o) ---
+# Regra para o Executável AVL
+$(EXEC_AVL): $(OBJS_AVL)
+	$(CC) $(CFLAGS) -o $@ $^
 
-# Matriz Arvore
-Matriz_Arvore.o: Matriz_Arvore.c Matriz_Arvore.h
-	$(CC) $(CFLAGS) -c Matriz_Arvore.c
+# Regra para o Executável HASH
+$(EXEC_HASH): $(OBJS_HASH)
+	$(CC) $(CFLAGS) -o $@ $^
 
-# Hash
-Hash.o: Hash.c Hash.h
-	$(CC) $(CFLAGS) -c Hash.c
+# Regra Genérica para transformar .c em .o no diretório $(OBJ_DIR)
+$(OBJ_DIR)/%.o: %.c
+	# Cria o subdiretório dentro de bin/ se ele não existir (ex: bin/source/)
+	@mkdir -p $(@D) 
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# Mains
-main.o: main.c Matriz_Arvore.h
-	$(CC) $(CFLAGS) -c main.c
+# ----------------------------------------------------------------------
+# Regras de Limpeza e Execução
+# ----------------------------------------------------------------------
 
-main_hash.o: main_hash.c Hash.h
-	$(CC) $(CFLAGS) -c main_hash.c
-
-main_avl.o: main_avl.c Matriz_Arvore.h
-	$(CC) $(CFLAGS) -c main_avl.c
-
-# --- Limpeza ---
+# Limpeza: remove executáveis e o diretório bin/ inteiro
 clean:
-	rm -f *.o $(TARGETS)
+	rm -f $(EXEC_AVL) $(EXEC_HASH)
+	rm -rf $(OBJ_DIR)
 
-run_avl: main_avl
-	./main_avl
+# Atalho para rodar a implementação AVL (main_avl.c)
+run_avl: $(EXEC_AVL)
+	./$(EXEC_AVL)
 
-run_hash: main_hash
-	./main_avl
+# Atalho para rodar a implementação HASH (main_hash.c)
+run_hash: $(EXEC_HASH)
+	./$(EXEC_HASH)
+
+# Atalho para rodar ambas as implementações
+run_all: $(EXEC_AVL) $(EXEC_HASH)
+	@echo "================================="
+	@echo "--- Executando Teste AVL (Arvores) ---"
+	@echo "================================="
+	./$(EXEC_AVL)
+	@echo "================================="
+	@echo "--- Executando Teste HASH (Tabela Hash) ---"
+	@echo "================================="
+	./$(EXEC_HASH)
+	@echo "================================="

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Hash.h" // Inclui as definições da sua ESTRUTURA HASH
+#include "hash/Hash.h" // Inclui as definições da sua ESTRUTURA HASH
 
 // Vamos usá-lo como o tamanho da tabela hash.
 #define TAMANHO_HASH INICIAL

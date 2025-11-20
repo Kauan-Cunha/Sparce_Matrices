@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Matriz_Arvore.h"
+#include "arvore/Matriz_Arvore.h"
 
 /*
     Função auxiliar para imprimir usando o container e acesso O(1)
