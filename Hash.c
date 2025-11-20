@@ -7,7 +7,7 @@ p_matriz_esparsa criar_matriz(int n, int m, int tamanho)
     A->m = m;
     A->tamanho = tamanho;
     A->usados = 0;
-    A->lista_todos = NULL;
+    A->lista_todos = NULL;                               // inicializa a lista encadeada
     A->tabela_hash = calloc(tamanho, sizeof(p_no_hash)); // aloca espaço e inicializa com NULL
     return A;
 }
@@ -15,13 +15,14 @@ p_matriz_esparsa criar_matriz(int n, int m, int tamanho)
 p_matrizes criar_matrizes(int n, int m, int tamanho)
 {
     p_matrizes matrizes = malloc(sizeof(struct Matrizes));
-    matrizes->normal = criar_matriz(n, m, tamanho);
-    matrizes->transposta = criar_matriz(m, n, tamanho);
+    matrizes->normal = criar_matriz(n, m, tamanho);     // cria A normal
+    matrizes->transposta = criar_matriz(m, n, tamanho); // cria A transposta
     return matrizes;
 }
 
 unsigned long long chave_hash(int i, int j)
 {
+    // funcao hash baseada em MurmurHash3
     unsigned long long key = ((unsigned long long)i << 32) | (unsigned long long)j;
 
     const unsigned long long C1 = 0xff51afd7ed558ccdULL;
@@ -39,7 +40,7 @@ unsigned long long chave_hash(int i, int j)
 int acessar(p_matriz_esparsa A, int i, int j)
 {
     int chave = chave_hash(i, j) % A->tamanho;
-    p_no_hash atual = A->tabela_hash[chave]; // acessa o nó atual através do hash em auxo esperado O(1)
+    p_no_hash atual = A->tabela_hash[chave]; // acessa o nó atual através do hash em tempo esperado O(1)
 
     while (atual)
     {
@@ -53,7 +54,7 @@ int acessar(p_matriz_esparsa A, int i, int j)
 
 void rehash(p_matriz_esparsa A)
 {
-    int novo_tamanho = A->tamanho * 2 + 1;
+    int novo_tamanho = A->tamanho * 2 + 1; // gera novo tamanho para a tabela
     p_no_hash *novo_hash = calloc(novo_tamanho, sizeof(p_no_hash));
 
     p_no_hash atual = A->lista_todos;
@@ -62,17 +63,17 @@ void rehash(p_matriz_esparsa A)
         int chave = chave_hash(atual->i, atual->j) % novo_tamanho;
         atual->prox_hash = novo_hash[chave];
         novo_hash[chave] = atual;
-        atual = atual->prox_todos;
+        atual = atual->prox_todos; // percorre na lista com todos os nós
     }
 
-    free(A->tabela_hash);
-    A->tabela_hash = novo_hash;
-    A->tamanho = novo_tamanho;
+    free(A->tabela_hash);       // libera a tabela antiga
+    A->tabela_hash = novo_hash; // atualiza
+    A->tamanho = novo_tamanho;  // atualiza
 }
 
 void inserir_atualizar(p_matriz_esparsa A, int i, int j, int valor)
 {
-    if (valor == 0)
+    if (valor == 0) // se o valor é 0 nao faz nada
         return;
 
     int chave = chave_hash(i, j) % A->tamanho;
@@ -88,6 +89,7 @@ void inserir_atualizar(p_matriz_esparsa A, int i, int j, int valor)
         atual = atual->prox_hash;
     }
 
+    // cria novo no
     p_no_hash novo_no = malloc(sizeof(struct No_hash));
     novo_no->i = i;
     novo_no->j = j;
@@ -95,25 +97,27 @@ void inserir_atualizar(p_matriz_esparsa A, int i, int j, int valor)
     novo_no->prox_hash = A->tabela_hash[chave];
     A->tabela_hash[chave] = novo_no; // insere na tabela hash
 
-    novo_no->prox_todos = A->lista_todos;
+    novo_no->prox_todos = A->lista_todos; // insere na lista de todos
     A->lista_todos = novo_no;
 
     A->usados++;
 
-    if ((double)A->usados / A->tamanho > FATOR_CARGA)
+    if ((double)A->usados / A->tamanho > FATOR_CARGA) // checa se precisa de rehash
         rehash(A);
 }
 
 void inserir_atualizar_matrizes(p_matrizes matrizes, int i, int j, int valor)
 {
-    inserir_atualizar(matrizes->normal, i, j, valor);
-    inserir_atualizar(matrizes->transposta, j, i, valor);
+    inserir_atualizar(matrizes->normal, i, j, valor);     // O(1) esperado
+    inserir_atualizar(matrizes->transposta, j, i, valor); // O(1) esperado
 }
 
 p_matriz_esparsa somar_matrizes(p_matriz_esparsa A, p_matriz_esparsa B)
 {
+    // O(ka + kb esperao)
     p_matriz_esparsa C = criar_matriz(A->n, A->m, A->tamanho); // cria matriz C
 
+    // percorre todos os elementos nao nulos de A
     p_no_hash x = A->lista_todos;
     while (x)
     {
@@ -121,6 +125,7 @@ p_matriz_esparsa somar_matrizes(p_matriz_esparsa A, p_matriz_esparsa B)
         x = x->prox_todos;
     }
 
+    // percorre todos os elementos nao nulos de B
     p_no_hash y = B->lista_todos;
     while (y)
     {
@@ -183,6 +188,7 @@ p_matriz_esparsa multiplicar_matrizes(p_matriz_esparsa A, p_matriz_esparsa B)
 {
     p_matriz_esparsa C = criar_matriz(A->n, B->m, A->tamanho);
 
+    // percorre os elementos de A
     p_no_hash a = A->lista_todos;
     while (a)
     {
@@ -192,20 +198,24 @@ p_matriz_esparsa multiplicar_matrizes(p_matriz_esparsa A, p_matriz_esparsa B)
 
         p_no_hash b = B->lista_todos;
         while (b)
+        // percorre os elementos de B
         {
             if (b->i == k)
             {
+                // Cij += Aik + Bkj
                 int j = b->j;
                 int valor = acessar(C, i, j) + Aik * b->valor;
                 inserir_atualizar(C, i, j, valor);
+
+                // vai pro proximo elemento nao nulo de B
+                b = b->prox_todos;
             }
-            b = b->prox_todos;
+            // vai pro proximo elemento nao nulo de A
+            a = a->prox_todos;
         }
 
-        a = a->prox_todos;
+        return C;
     }
-
-    return C;
 }
 
 p_matrizes atualiza_multiplicacao_matrizes(p_matrizes matrizesA, p_matrizes matrizesB)
