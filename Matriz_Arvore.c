@@ -380,6 +380,10 @@ int acessar_elemento(int i, int j, p_avl_linha raiz_linhas)
 
 p_avl_linha inserir_elemento(int valor, int i, int j, p_avl_linha raiz_linhas)
 {
+    if (valor == 0){
+        return raiz_linhas;
+    }
+    
     p_avl_linha no_linha = buscar_entrada_linhas(raiz_linhas, i);
 
     if (no_linha == NULL)
