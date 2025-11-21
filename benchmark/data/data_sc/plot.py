@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 # 1. Carregar CSV
 # -----------------------------------------------------------
 # Salve os dados acima em: dados.csv
-data = np.genfromtxt("hash_mult_esp_dez.csv", delimiter=",", names=True)
+data = np.genfromtxt("/home/kauan/unicamp/semestre_4/mc458/Sparce_Matrices/benchmark/data/hash/hash_mult_esp_cinco.csv", delimiter=",", names=True)
 
 x = data["Num_Elementos"]
 y = data["Tempo_Medio_Segundos"]
@@ -17,7 +17,7 @@ plt.figure(figsize=(8,5))
 plt.plot(x, y, 'o-', label="Dados")
 plt.xlabel("Número de Elementos")
 plt.ylabel("Tempo Médio (s)")
-plt.title("Mult. Escalar hash: Tempo Médio x Número de elementos não-nulos")
+plt.title("Mult. Matrizes hash: Tempo Médio x Número de elementos não-nulos")
 plt.grid(True)
 plt.legend()
 plt.tight_layout()

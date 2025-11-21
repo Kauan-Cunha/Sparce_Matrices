@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "source/hash/Hash.c"
+#include "/home/kauan/unicamp/semestre_4/mc458/Sparce_Matrices/source/hash/Hash.c"
 
 // --- FUNÇÕES DE LIMPEZA ---
 void destruir_matriz_esparsa_hash(p_matriz_esparsa A) {
@@ -51,13 +51,13 @@ Dado* gerar_dados_esparsos(int n, float densidade_percentual, int *qtd_retorno) 
 
 int main() {
     srand(time(NULL));
-    float densidade = 10.0; // 1%
+    float densidade = 5.0; // 1%
     int tamanho_vetor = 0;
     
     printf("Num_Elementos_Nao_Nulos,Tempo_Medio_Multiplicacao_Segundos\n");
 
     // Limite reduzido para evitar OOM Killer se a RAM for < 8GB
-    for(int n = 100; n <= 500; n += 100) {
+    for(int n = 100; n <= 1000; n += 100) {
         double tempo_acumulado = 0;
         int repeticoes = 3;
 
