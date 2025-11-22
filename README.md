@@ -15,3 +15,12 @@ Para compilar ambas as implementações (Hash e AVL) e gerar os executáveis na 
 
 ```bash
 make all
+```
+Para dar run no teste que se encontra na *main_avl.c* e *main_hash.c*, execute o comando:
+```bash
+make run_avl
+```
+e/ou
+```bash
+make run_hash
+```
